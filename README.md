@@ -27,7 +27,7 @@ func handlerFunc(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-For more details see [gormstore godoc documentation](http://www.godoc.org/github.com/lafriks/xormstore).
+For more details see [xormstore godoc documentation](http://www.godoc.org/github.com/lafriks/xormstore).
 
 #### Testing
 
