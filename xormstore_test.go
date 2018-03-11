@@ -40,7 +40,7 @@ func connectDbURI(uri string) (*xorm.Engine, error) {
 
 	var err error
 	// retry to give some time for db to be ready
-	for i := 0; i < 50; i++ {
+	for i := 0; i < 300; i++ {
 		e, err := xorm.NewEngine(driver, dsn)
 		if err == nil {
 			if _, err := e.IsTableExist("session"); err == nil {
