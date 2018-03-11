@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/lafriks/xormstore.svg?branch=master)](https://travis-ci.org/lafriks/xormstore)
+[![codecov](https://codecov.io/gh/lafriks/xormstore/branch/master/graph/badge.svg)](https://codecov.io/gh/lafriks/xormstore)
+
+
 #### XORM backend for gorilla sessions
 
     go get github.com/lafriks/xormstore

@@ -3,7 +3,7 @@
 DOCKER_IP=${DOCKER_IP:-127.0.0.1}
 
 sqlite3() {
-  DATABASE_URI="sqlite3://file:dummy?mode=memory&cache=shared" go test -v -race -cover
+  DATABASE_URI="sqlite3://file:dummy?mode=memory&cache=shared" go test -v -race -cover -coverprofile=coverage.txt -covermode=atomic
   return $?
 }
 
