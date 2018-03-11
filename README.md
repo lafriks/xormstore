@@ -1,10 +1,10 @@
+[![GoDoc](https://godoc.org/github.com/lafriks/xormstore?status.svg)](https://godoc.org/github.com/lafriks/xormstore)
+[![Build Status](https://travis-ci.org/lafriks/xormstore.svg?branch=master)](https://travis-ci.org/lafriks/xormstore)
+[![codecov](https://codecov.io/gh/lafriks/xormstore/branch/master/graph/badge.svg)](https://codecov.io/gh/lafriks/xormstore)
+
 #### XORM backend for gorilla sessions
 
     go get github.com/lafriks/xormstore
-
-#### Documentation
-
-http://www.godoc.org/github.com/lafriks/xormstore
 
 #### Example
 
@@ -27,7 +27,7 @@ func handlerFunc(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-For more details see [xormstore godoc documentation](http://www.godoc.org/github.com/lafriks/xormstore).
+For more details see [xormstore godoc documentation](https://godoc.org/github.com/lafriks/xormstore).
 
 #### Testing
 

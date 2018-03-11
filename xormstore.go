@@ -7,7 +7,7 @@ Simplest form:
 
 All options:
 
-	store := gormstore.NewOptions(
+	store := xormstore.NewOptions(
 		engine, // *xorm.Engine
 		xormstore.Options{
 			TableName: "sessions",  // "sessions" is default
@@ -51,13 +51,13 @@ const defaultTableName = "sessions"
 const defaultMaxAge = 60 * 60 * 24 * 30 // 30 days
 const defaultPath = "/"
 
-// Options for gormstore
+// Options for xormstore
 type Options struct {
 	TableName       string
 	SkipCreateTable bool
 }
 
-// Store represent a gormstore
+// Store represent a xormstore
 type Store struct {
 	e           *xorm.Engine
 	opts        Options
@@ -82,12 +82,12 @@ func (xs *xormSession) TableName() string {
 	return xs.tableName
 }
 
-// New creates a new gormstore session
+// New creates a new xormstore session
 func New(e *xorm.Engine, keyPairs ...[]byte) *Store {
 	return NewOptions(e, Options{}, keyPairs...)
 }
 
-// NewOptions creates a new gormstore session with options
+// NewOptions creates a new xormstore session with options
 func NewOptions(e *xorm.Engine, opts Options, keyPairs ...[]byte) *Store {
 	st := &Store{
 		e:      e,

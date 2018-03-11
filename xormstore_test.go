@@ -14,6 +14,7 @@ import (
 
 	"github.com/lafriks/xormstore/util"
 
+	_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
 	_ "github.com/lib/pq"
@@ -39,12 +40,14 @@ func connectDbURI(uri string) (*xorm.Engine, error) {
 
 	var err error
 	// retry to give some time for db to be ready
-	for i := 0; i < 50; i++ {
+	for i := 0; i < 300; i++ {
 		e, err := xorm.NewEngine(driver, dsn)
 		if err == nil {
-			return e, nil
+			if _, err := e.IsTableExist("session"); err == nil {
+				return e, nil
+			}
 		}
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(time.Second)
 	}
 
 	return nil, err
