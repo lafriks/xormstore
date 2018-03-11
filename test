@@ -62,9 +62,9 @@ mariadb10() {
   return $S
 }
 
-#sqlite3 || exit 1
-#postgres94 || exit 1
-#postgres96 || exit 1
-#postgres10 || exit 1
-#mysql57 || exit 1
+sqlite3 || exit 1
+postgres94 || exit 1
+postgres96 || exit 1
+postgres10 || exit 1
+mysql57 || exit 1
 mariadb10 || exit 1
