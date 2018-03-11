@@ -1,16 +1,16 @@
-#### GORM backend for gorilla sessions
+#### XORM backend for gorilla sessions
 
-    go get github.com/wader/gormstore
+    go get github.com/lafriks/xormstore
 
 #### Documentation
 
-http://www.godoc.org/github.com/wader/gormstore
+http://www.godoc.org/github.com/lafriks/xormstore
 
 #### Example
 
 ```go
 // initialize and setup cleanup
-store := gormstore.New(gorm.Open(...), []byte("secret"))
+store := xormstore.New(engine, []byte("secret"))
 // db cleanup every hour
 // close quit channel to stop cleanup
 quit := make(chan struct{})
@@ -27,7 +27,7 @@ func handlerFunc(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-For more details see [gormstore godoc documentation](http://www.godoc.org/github.com/wader/gormstore).
+For more details see [gormstore godoc documentation](http://www.godoc.org/github.com/lafriks/xormstore).
 
 #### Testing
 
@@ -45,4 +45,4 @@ If docker is not local (docker-machine etc):
 
 #### License
 
-gormstore is licensed under the MIT license. See [LICENSE](LICENSE) for the full license text.
+xormstore is licensed under the MIT license. See [LICENSE](LICENSE) for the full license text.
