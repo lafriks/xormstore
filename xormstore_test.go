@@ -124,7 +124,12 @@ func makeCountHandler(name string, store *Store) http.HandlerFunc {
 }
 
 func TestBasic(t *testing.T) {
-	countFn := makeCountHandler("session", New(newEngine(), []byte("secret")))
+	store, err := New(newEngine(), []byte("secret"))
+	if err != nil {
+		t.Errorf("New init failed: %d", err)
+		return
+	}
+	countFn := makeCountHandler("session", store)
 	r1 := req(countFn, nil)
 	match(t, r1, 200, "1")
 	r2 := req(countFn, parseCookies(r1.Header().Get("Set-Cookie"))["session"])
@@ -133,7 +138,11 @@ func TestBasic(t *testing.T) {
 
 func TestExpire(t *testing.T) {
 	e := newEngine()
-	store := New(e, []byte("secret"))
+	store, err := New(e, []byte("secret"))
+	if err != nil {
+		t.Errorf("New init failed: %d", err)
+		return
+	}
 	countFn := makeCountHandler("session", store)
 
 	r1 := req(countFn, nil)
@@ -156,7 +165,11 @@ func TestExpire(t *testing.T) {
 }
 
 func TestBrokenCookie(t *testing.T) {
-	store := New(newEngine(), []byte("secret"))
+	store, err := New(newEngine(), []byte("secret"))
+	if err != nil {
+		t.Errorf("New init failed: %d", err)
+		return
+	}
 	countFn := makeCountHandler("session", store)
 
 	r1 := req(countFn, nil)
@@ -170,7 +183,11 @@ func TestBrokenCookie(t *testing.T) {
 
 func TestMaxAgeNegative(t *testing.T) {
 	e := newEngine()
-	store := New(e, []byte("secret"))
+	store, err := New(e, []byte("secret"))
+	if err != nil {
+		t.Errorf("New init failed: %d", err)
+		return
+	}
 	countFn := makeCountHandler("session", store)
 
 	r1 := req(countFn, nil)
@@ -201,7 +218,11 @@ func TestMaxAgeNegative(t *testing.T) {
 }
 
 func TestMaxLength(t *testing.T) {
-	store := New(newEngine(), []byte("secret"))
+	store, err := New(newEngine(), []byte("secret"))
+	if err != nil {
+		t.Errorf("New init failed: %d", err)
+		return
+	}
 	store.MaxLength(10)
 
 	r1 := req(func(w http.ResponseWriter, r *http.Request) {
@@ -222,7 +243,11 @@ func TestMaxLength(t *testing.T) {
 
 func TestTableName(t *testing.T) {
 	e := newEngine()
-	store := NewOptions(e, Options{TableName: "abc"}, []byte("secret"))
+	store, err := NewOptions(e, Options{TableName: "abc"}, []byte("secret"))
+	if err != nil {
+		t.Errorf("NewOptions init failed: %d", err)
+		return
+	}
 	countFn := makeCountHandler("session", store)
 
 	if has, err := e.IsTableExist(&xormSession{tableName: store.opts.TableName}); !has || err != nil {
@@ -248,7 +273,11 @@ func TestTableName(t *testing.T) {
 
 func TestSkipCreateTable(t *testing.T) {
 	e := newEngine()
-	store := NewOptions(e, Options{SkipCreateTable: true}, []byte("secret"))
+	store, err := NewOptions(e, Options{SkipCreateTable: true}, []byte("secret"))
+	if err != nil {
+		t.Errorf("NewOptions init failed: %d", err)
+		return
+	}
 
 	if has, err := e.IsTableExist(&xormSession{tableName: store.opts.TableName}); has || err != nil {
 		t.Error("Expected no table created")
@@ -256,7 +285,11 @@ func TestSkipCreateTable(t *testing.T) {
 }
 
 func TestMultiSessions(t *testing.T) {
-	store := New(newEngine(), []byte("secret"))
+	store, err := New(newEngine(), []byte("secret"))
+	if err != nil {
+		t.Errorf("New init failed: %d", err)
+		return
+	}
 	countFn1 := makeCountHandler("session1", store)
 	countFn2 := makeCountHandler("session2", store)
 
@@ -273,7 +306,11 @@ func TestMultiSessions(t *testing.T) {
 
 func TestPeriodicCleanup(t *testing.T) {
 	e := newEngine()
-	store := New(e, []byte("secret"))
+	store, err := New(e, []byte("secret"))
+	if err != nil {
+		t.Errorf("New init failed: %d", err)
+		return
+	}
 	store.SessionOpts.MaxAge = 1
 	countFn := makeCountHandler("session", store)
 
