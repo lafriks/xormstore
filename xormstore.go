@@ -37,6 +37,7 @@ For API to use in HTTP handlers see https://github.com/gorilla/sessions
 package xormstore
 
 import (
+	"context"
 	"encoding/base32"
 	"net/http"
 	"strings"
@@ -45,7 +46,6 @@ import (
 	"github.com/lafriks/xormstore/util"
 
 	"github.com/go-xorm/xorm"
-	"github.com/gorilla/context"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
 )
@@ -141,7 +141,9 @@ func (st *Store) New(r *http.Request, name string) (*sessions.Session, error) {
 			return session, nil
 		}
 
-		context.Set(r, contextKey(name), s)
+		//Add data to context
+		ctx := context.WithValue(r.Context(), contextKey(name), s)
+		r = r.WithContext(ctx) //Set context //TODO validate this or should be *r = *(r.WithContext(ctx))
 	}
 
 	return session, nil
@@ -149,7 +151,7 @@ func (st *Store) New(r *http.Request, name string) (*sessions.Session, error) {
 
 // Save session and set cookie header
 func (st *Store) Save(r *http.Request, w http.ResponseWriter, session *sessions.Session) error {
-	s, _ := context.Get(r, contextKey(session.Name())).(*xormSession)
+	s, _ := r.Context().Value(contextKey(session.Name())).(*xormSession)
 
 	// delete if max age is < 0
 	if session.Options.MaxAge < 0 {
@@ -188,7 +190,10 @@ func (st *Store) Save(r *http.Request, w http.ResponseWriter, session *sessions.
 		if _, err := st.e.Insert(s); err != nil {
 			return err
 		}
-		context.Set(r, contextKey(session.Name()), s)
+		//Add data to context
+		ctx := context.WithValue(r.Context(), contextKey(session.Name()), s)
+		r = r.WithContext(ctx) //Set context //TODO validate this or should be *r = *(r.WithContext(ctx))
+
 	} else {
 		s.Data = data
 		s.UpdatedUnix = now
