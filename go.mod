@@ -6,7 +6,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20190924004331-208c0a498538
 	github.com/go-sql-driver/mysql v1.4.1
-	github.com/go-xorm/xorm v0.7.8-0.20190928100219-d6963b7d423d
+	github.com/go-xorm/xorm v0.7.8
 	github.com/gorilla/context v1.1.1
 	github.com/gorilla/securecookie v1.1.1
 	github.com/gorilla/sessions v1.2.0
@@ -16,5 +16,5 @@ require (
 	golang.org/x/crypto v0.0.0-20190927123631-a832865fa7ad // indirect
 	google.golang.org/appengine v1.6.4 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
-	xorm.io/core v0.7.2-0.20190928055935-90aeac8d08eb
+	xorm.io/core v0.7.2
 )
