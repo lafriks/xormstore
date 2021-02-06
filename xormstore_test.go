@@ -16,10 +16,10 @@ import (
 
 	_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/go-sql-driver/mysql"
-	"xorm.io/xorm"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
-	"xorm.io/core"
+	"xorm.io/xorm"
+	"xorm.io/xorm/log"
 )
 
 // default test db
@@ -43,7 +43,7 @@ func connectDbURI(uri string) (*xorm.Engine, error) {
 	// retry to give some time for db to be ready
 	for i := 0; i < 300; i++ {
 		e, err := xorm.NewEngine(driver, dsn)
-		e.SetLogLevel(core.LOG_WARNING)
+		e.SetLogLevel(log.LOG_WARNING)
 		if err == nil {
 			if err := e.Ping(); err == nil {
 				return e, nil
