@@ -7,8 +7,8 @@ sqlite3() {
   return $?
 }
 
-postgres10() {
-  ID=$(docker run -p 5432 -d postgres:10-alpine)
+postgres17() {
+  ID=$(docker run -p 5432 -d postgres:17-alpine)
   PORT=$(docker port "$ID" 5432 | cut -d : -f 2)
   DATABASE_URI="postgres://user=postgres password=postgres dbname=postgres host=$DOCKER_IP port=$PORT sslmode=disable" go test -v -race -cover
   S=$?
@@ -16,17 +16,8 @@ postgres10() {
   return $S
 }
 
-postgres96() {
-  ID=$(docker run -p 5432 -d postgres:9.6-alpine)
-  PORT=$(docker port "$ID" 5432 | cut -d : -f 2)
-  DATABASE_URI="postgres://user=postgres password=postgres dbname=postgres host=$DOCKER_IP port=$PORT sslmode=disable" go test -v -race -cover
-  S=$?
-  docker rm -vf "$ID" > /dev/null
-  return $S
-}
-
-postgres94() {
-  ID=$(docker run -p 5432 -d postgres:9.4-alpine)
+postgres12() {
+  ID=$(docker run -p 5432 -d postgres:12-alpine)
   PORT=$(docker port "$ID" 5432 | cut -d : -f 2)
   DATABASE_URI="postgres://user=postgres password=postgres dbname=postgres host=$DOCKER_IP port=$PORT sslmode=disable" go test -v -race -cover
   S=$?
@@ -63,8 +54,7 @@ mariadb10() {
 }
 
 sqlite3 || exit 1
-postgres94 || exit 1
-postgres96 || exit 1
-postgres10 || exit 1
+postgres12 || exit 1
+postgres17 || exit 1
 mysql57 || exit 1
 mariadb10 || exit 1

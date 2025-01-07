@@ -44,16 +44,18 @@ import (
 
 	"github.com/lafriks/xormstore/util"
 
-	"xorm.io/xorm"
 	"github.com/gorilla/context"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
+	"xorm.io/xorm"
 )
 
-const sessionIDLen = 32
-const defaultTableName = "sessions"
-const defaultMaxAge = 60 * 60 * 24 * 30 // 30 days
-const defaultPath = "/"
+const (
+	sessionIDLen     = 32
+	defaultTableName = "sessions"
+	defaultMaxAge    = 60 * 60 * 24 * 30 // 30 days
+	defaultPath      = "/"
+)
 
 // Options for xormstore
 type Options struct {
@@ -233,7 +235,7 @@ func (st *Store) MaxLength(l int) {
 
 // Cleanup deletes expired sessions
 func (st *Store) Cleanup() {
-	st.e.Where("expires_unix < ?", util.TimeStampNow()).Delete(&xormSession{tableName: st.opts.TableName})
+	_, _ = st.e.Where("expires_unix < ?", util.TimeStampNow()).Delete(&xormSession{tableName: st.opts.TableName})
 }
 
 // PeriodicCleanup runs Cleanup every interval. Close quit channel to stop.

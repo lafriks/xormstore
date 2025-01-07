@@ -1,0 +1,70 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go: [ '1.21', '1.22', '1.23' ]
+
+    name: Go ${{ matrix.go }}
+
+    services:
+      postgres12:
+        image: postgres:12
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      postgres17:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - "5433:5432"
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ matrix.go }}
+
+    - name: Lint
+      run: |
+        go vet -all .
+
+    - name: Test with SQLite
+      env:
+        DATABASE_URL: sqlite3://file:dummy?mode=memory&cache=shared
+      run: go test -v -race -cover -coverprofile=coverage.txt -covermode=atomic
+
+    - name: Test with PostgreSQL 12
+      env:
+        DATABASE_URL: postgres://user=postgres password=postgres dbname=postgres host=127.0.0.1 port=5432 sslmode=disable
+      run: go test -v -race -cover
+
+    - name: Test with PostgreSQL 17
+      env:
+        DATABASE_URL: postgres://user=postgres password=postgres dbname=postgres host=127.0.0.1 port=5433 sslmode=disable
+      run: go test -v -race -cover
