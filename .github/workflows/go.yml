@@ -57,7 +57,7 @@ jobs:
     - name: Test with SQLite
       env:
         DATABASE_URL: sqlite3://file:dummy?mode=memory&cache=shared
-      run: go test -v -race -cover -coverprofile=coverage.txt -covermode=atomic
+      run: go test -v -race -cover
 
     - name: Test with PostgreSQL 12
       env:
